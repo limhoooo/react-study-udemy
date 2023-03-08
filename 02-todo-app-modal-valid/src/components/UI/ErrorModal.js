@@ -9,7 +9,7 @@ const BackdropRoot = props => {
   return <div className={classes.backdrop} onClick={props.onConfirm} />
 };
 
-const ErrorModalRoot = props => {
+const Modal = props => {
   return <Card className={classes.modal}>
     <header className={classes.header}>
       <h2>{props.title}</h2>
@@ -28,10 +28,10 @@ const ErrorModal = (props) => {
   return (
     <div>
       {
-        ReactDOM.createPortal(<BackdropRoot onConfirm={props.onConfirm} />, document.getElementById('backdrop'))
+        ReactDOM.createPortal(<BackdropRoot onConfirm={props.onConfirm} />, document.getElementById('backdrop-root'))
       }
       {
-        ReactDOM.createPortal(<ErrorModalRoot onConfirm={props.onConfirm} title={props.title} message={props.message} />, document.getElementById('errorModal'))
+        ReactDOM.createPortal(<Modal onConfirm={props.onConfirm} title={props.title} message={props.message} />, document.getElementById('errorModal-root'))
       }
     </div>
   );
