@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Login from './components/Login/Login';
+import Login2 from './components/Login/Login2';
 import Home from './components/Home/Home';
 import MainHeader from './components/MainHeader/MainHeader';
 
@@ -27,7 +28,8 @@ function App() {
     <React.Fragment>
       <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} />
       <main>
-        {!isLoggedIn && <Login onLogin={loginHandler} />}
+        {/* {!isLoggedIn && <Login onLogin={loginHandler} />} */}
+        {!isLoggedIn && <Login2 onLogin={loginHandler} />}
         {isLoggedIn && <Home onLogout={logoutHandler} />}
       </main>
     </React.Fragment>

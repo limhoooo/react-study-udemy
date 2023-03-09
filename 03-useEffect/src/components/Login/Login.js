@@ -28,19 +28,19 @@ const passwordReducer = (state, actions) => {
 
 const Login = (props) => {
 
-
   const [formIsValid, setFormIsValid] = useState(false);
   const [stateEmail, dispatchEmail] = useReducer(emailReducer, emailInit);
   const [statePassword, dispatchPassword] = useReducer(passwordReducer, passwordInit);
 
-
-
+  // useEffect 최적화
+  const { valid: emailVaild } = stateEmail;
+  const { valid: passwordVaild } = statePassword;
 
   useEffect(() => {
     const indentifier = setTimeout(() => {
       console.log("checking!");
       setFormIsValid(
-        stateEmail.valid && statePassword.valid
+        emailVaild && passwordVaild
       );
     }, 500);
 
@@ -48,7 +48,7 @@ const Login = (props) => {
       console.log('cleanUp');
       clearTimeout(indentifier)
     }
-  }, [stateEmail, statePassword])
+  }, [emailVaild, passwordVaild])
 
 
   const emailChangeHandler = (event) => {
