@@ -28,15 +28,6 @@ function App() {
             releaseDate: data[key].releaseDate,
           })
         }
-
-        // const transformedMovies = data.results.map(movieData => {
-        //   return {
-        //     id: movieData.episode_id,
-        //     title: movieData.title,
-        //     openingText: movieData.opening_crawl,
-        //     releaseDate: movieData.release_date,
-        //   }
-        // });
         setMovies(loadMovies);
       } catch (error) {
         setError(error.message)
@@ -45,16 +36,15 @@ function App() {
     }, [])
 
   const addMovieHandler = useCallback(async (movie) => {
-    const res = await fetch('https://react-test-d49b3-default-rtdb.firebaseio.com/movies.json',
+    await fetch('https://react-test-d49b3-default-rtdb.firebaseio.com/movies.json',
       {
         method: 'POST',
         body: JSON.stringify(movie),
         headers: { 'Content-Type': 'application/json' }
       }
     );
-    const data = await res.json();
     fetchMoviesHandler();
-  }, [])
+  }, [fetchMoviesHandler])
 
   useEffect(() => {
     fetchMoviesHandler()
