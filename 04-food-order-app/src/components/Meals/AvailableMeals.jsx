@@ -8,7 +8,9 @@ import MealItem from './MealItem/MealItem';
 const AvailableMeals = () => {
 
     const [meals, setMeals] = useState([])
+    const [isLoding, setisLoding] = useState(false);
     const fetchMeals = useCallback(async () => {
+        setisLoding(true)
         const res = await fetch('https://react-test-d49b3-default-rtdb.firebaseio.com//meals.json');
         const data = await res.json();
         const loadedMeals = [];
@@ -20,8 +22,9 @@ const AvailableMeals = () => {
                 description: data[key].description
             })
         }
+        setisLoding(false)
         setMeals(loadedMeals);
-    }, [])
+    }, [setisLoding])
     useEffect(() => {
         fetchMeals();
     }, [fetchMeals])
@@ -30,7 +33,7 @@ const AvailableMeals = () => {
     return <section className={classes.meals}>
         <Card>
             <ul>
-                {mealsList}
+                {isLoding ? <p>로딩중입니다.</p> : mealsList}
             </ul>
         </Card>
     </section>
