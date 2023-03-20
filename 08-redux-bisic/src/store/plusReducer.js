@@ -19,7 +19,7 @@ const reducer = (state = init, action) => {
         case PLUSFIVE:
             return { ...state, count: state.count + action.number }
         case TOGGLE:
-            return { ...init, show: !state.show }
+            return { ...state, show: !state.show }
         default:
             return state
     }
