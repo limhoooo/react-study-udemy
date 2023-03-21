@@ -1,23 +1,23 @@
-import classes from './Counter.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { counterActions } from '../store/counter';
+import classes from './Counter.module.css';
 
+import { counterAction } from '../store/counter-slice'
 const Counter = () => {
+  const count = useSelector(state => state.counter.count);
+  const show = useSelector(state => state.counter.show);
   const dispatch = useDispatch();
-  const counter = useSelector((state) => state.counter.count);
-  const show = useSelector((state) => state.counter.show);
+  const incrementDispatch = () => {
+    dispatch(counterAction.increment());
+  }
+  const incrementFiveDispatch = () => {
+    dispatch(counterAction.incrementFive(5));
+  }
+  const decrementDispatch = () => {
+    dispatch(counterAction.decrement());
 
-  const plusDispatch = () => {
-    dispatch(counterActions.plus())
   }
-  const plusFiveDispatch = () => {
-    dispatch(counterActions.plusFive(5))
-  }
-  const minusDispatch = () => {
-    dispatch(counterActions.minus())
-  }
-  const toggleCounterHandler = () => {
-    dispatch(counterActions.toggle())
+  const toggleHandler = () => {
+    dispatch(counterAction.toggle());
   };
 
   return (
@@ -26,15 +26,15 @@ const Counter = () => {
       {
         show &&
         <>
-          <div className={classes.value}>-- {counter} --</div>
+          <div className={classes.value}>-- {count} --</div>
           <div>
-            <button onClick={plusDispatch}>PLUS +1</button>
-            <button onClick={plusFiveDispatch}>PLUS +5</button>
-            <button onClick={minusDispatch}>MINUS -1</button>
+            <button onClick={incrementDispatch}>PLUS +1</button>
+            <button onClick={incrementFiveDispatch}>PLUS +5</button>
+            <button onClick={decrementDispatch}>MINUS -1</button>
           </div>
         </>
       }
-      <button onClick={toggleCounterHandler}>Toggle Counter</button>
+      <button onClick={toggleHandler}>Toggle Counter</button>
     </main>
   );
 };
