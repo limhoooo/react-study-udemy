@@ -1,8 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-
-
-
 export const fetchCartData = createAsyncThunk(
   'cart/fetchCartData',
   async () => {
@@ -37,7 +34,6 @@ const cartSlice = createSlice({
       totalQuantity: 0,
       changed: false,
     },
-    notification: {}
   },
   reducers: {
     replaceCart(state, action) {
@@ -76,37 +72,9 @@ const cartSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchCartData.pending]: (state, action) => {
-      state.notification.status = 'pending';
-      state.notification.title = 'Sending...';
-      state.notification.message = 'Sending cart data!';
-    },
     [fetchCartData.fulfilled]: (state, action) => {
       state.cartItem.totalQuantity = action.payload.totalQuantity;
       state.cartItem.items = action.payload.items;
-      state.notification.status = 'success';
-      state.notification.title = 'Success!';
-      state.notification.message = 'Sent cart data successfully!';
-    },
-    [fetchCartData.rejected]: (state, action) => {
-      state.notification.status = 'error';
-      state.notification.title = 'Error!';
-      state.notification.message = 'Fetching cart data failed!';
-    },
-    [sendCartData.pending]: (state, action) => {
-      state.notification.status = 'pending';
-      state.notification.title = 'Sending...';
-      state.notification.message = 'Sending cart data!';
-    },
-    [sendCartData.fulfilled]: (state, action) => {
-      state.notification.status = 'success';
-      state.notification.title = 'Success!';
-      state.notification.message = 'Sent cart data successfully!';
-    },
-    [sendCartData.rejected]: (state, action) => {
-      state.notification.status = 'error';
-      state.notification.title = 'Error!';
-      state.notification.message = 'Fetching cart data failed!';
     },
   }
 });
