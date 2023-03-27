@@ -1,39 +1,44 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { API } from '../api';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { API } from "../api";
 
 export const fetchCartData = createAsyncThunk(
-  'cart/fetchCartData',
+  "cart/fetchCartData",
   async () => {
-    const response = await API.get('https://react-test-d49b3-default-rtdb.firebaseio.com//cart.json');
+    const response = await API.get(
+      "https://react-test-d49b3-default-rtdb.firebaseio.com//cart.json"
+    );
     return response.data;
   }
-)
+);
 export const sendCartData = createAsyncThunk(
-  'cart/sendCartData',
+  "cart/sendCartData",
   async (cart) => {
     const body = JSON.stringify({
       items: cart.items,
       totalQuantity: cart.totalQuantity,
-    })
-    const response = await API.put('https://react-test-d49b3-default-rtdb.firebaseio.com//cart.json', body);
+    });
+    const response = await API.put(
+      "https://react-test-d49b3-default-rtdb.firebaseio.com//cart.json",
+      body
+    );
     return response.data;
   }
-)
+);
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState: {
     cartItem: {
       items: [],
       totalQuantity: 0,
       changed: false,
-      test: ''
+      test: "",
     },
-    notification: {}
+    notification: {},
   },
   reducers: {
     test: (state) => {
-      state.test = 'test'
+      state.test = "test";
       console.log(state.test);
     },
     replaceCart(state, action) {
@@ -42,7 +47,9 @@ const cartSlice = createSlice({
     },
     addItemToCart(state, action) {
       const newItem = action.payload;
-      const existingItem = state.cartItem.items.find((item) => item.id === newItem.id);
+      const existingItem = state.cartItem.items.find(
+        (item) => item.id === newItem.id
+      );
       state.cartItem.totalQuantity++;
       state.cartItem.changed = true;
       if (!existingItem) {
@@ -64,14 +71,16 @@ const cartSlice = createSlice({
       state.cartItem.totalQuantity--;
       state.cartItem.changed = true;
       if (existingItem.quantity === 1) {
-        state.cartItem.items = state.cartItem.items.filter((item) => item.id !== id);
+        state.cartItem.items = state.cartItem.items.filter(
+          (item) => item.id !== id
+        );
       } else {
         existingItem.quantity--;
         existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
       }
     },
   },
-  // move loding-slice.js 
+  // move loding-slice.js
 
   // extraReducers: {
   //   [fetchCartData.pending]: (state, action) => {
