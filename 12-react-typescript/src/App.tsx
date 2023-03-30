@@ -1,10 +1,13 @@
 import "./App.css";
+import NewTodoUseState from "./components/NewTodoUseState";
 import Todos from "./components/Todos";
 import Todo from "./models/todo";
+import { useState } from "react";
 
 function App() {
+  const [todos, setTodos] = useState<Todo[]>([]);
   // *class Type
-  const todos = [new Todo("Learn React"), new Todo("Learn Typescript")];
+  // const todos = [new Todo("Learn React"), new Todo("Learn Typescript")];
 
   // *interface Type
   // const todos = [
@@ -26,10 +29,19 @@ function App() {
   //   },
   // ] as Todo[];
 
+  const onAddTodo = (text: string): void => {
+    setTodos((state) => [...state, { ...new Todo(text) }]);
+  };
+  const handleOnClick = (id: string) => {
+    setTodos((state) => {
+      return state.filter((item) => item.id !== id);
+    });
+  };
   return (
     <div className="App">
-      <Todos items={todos}>
-        <p>아이들</p>
+      <NewTodoUseState onAddTodo={onAddTodo} />
+      <Todos items={todos} handleOnClick={handleOnClick}>
+        <p>props</p>
       </Todos>
     </div>
   );

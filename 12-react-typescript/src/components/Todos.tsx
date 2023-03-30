@@ -1,6 +1,9 @@
 import React, { ReactNode } from "react";
 import Todo from "../models/todo";
 import TodoItem from "./TodoItem";
+import classes from "./Todos.module.css";
+import { useSelector } from "react-redux";
+import { useAppSelector } from "../hook/hooks";
 
 // FC 를 쓰면 props 안의 chilren 을 쉽게 사용할 수 있다.
 // 제네릭까지쓰면 FC 에 들어있는 chilren 과 들어올 props 의 타입을 같이 사용가능하다.
@@ -26,13 +29,30 @@ import TodoItem from "./TodoItem";
 interface PropsType {
   items: Todo[];
   children: ReactNode;
+  handleOnClick: (id: string) => void;
 }
 
-const Todos = ({ items, children }: PropsType) => {
+const Todos = ({ items, children, handleOnClick }: PropsType) => {
+  const itemsValue = useAppSelector((state) => state.todo.item);
   return (
-    <ul>
-      {items.map((item) => (
-        <TodoItem key={item.id} text={item.text}>
+    <ul className={classes.todos}>
+      {/* {items.map((item, index) => (
+        <TodoItem
+          key={index}
+          text={item.text}
+          id={item.id}
+          handleOnClick={handleOnClick}
+        >
+          <span> ^^</span>
+        </TodoItem>
+      ))} */}
+      {itemsValue.map((item, index) => (
+        <TodoItem
+          key={index}
+          text={item.text}
+          id={item.id}
+          handleOnClick={handleOnClick}
+        >
           <span> ^^</span>
         </TodoItem>
       ))}
