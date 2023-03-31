@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
 import classes from "./NewTodo.module.css";
-import { todoActions } from "../store/todoSlice";
+import { postTodo, todoActions } from "../store/todoSlice";
 import { useAppDispatch } from "../hook/hooks";
+import { fetchTodo } from "./../store/todoSlice";
 
 interface NewTodoType {
   onAddTodo: (data: string) => void;
@@ -39,7 +40,10 @@ const NewTodo = ({ onAddTodo }: NewTodoType) => {
     if (todoText?.trim().length === 0) {
       return;
     }
-    dispatch(todoActions.addItem(todoText));
+    dispatch(postTodo(todoText));
+    setTimeout(() => {
+      dispatch(fetchTodo());
+    }, 500);
     //onAddTodo(todoText as string);
     setTodoText("");
   };

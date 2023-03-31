@@ -4,7 +4,9 @@ import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./store/index";
+import setUpInterceptors from "./api/interceptors";
 
+setUpInterceptors(store);
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

@@ -3,9 +3,12 @@ import NewTodoUseState from "./components/NewTodoUseState";
 import Todos from "./components/Todos";
 import Todo from "./models/todo";
 import { useState } from "react";
+import { useAppSelector } from "./hook/hooks";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const isLoading = useAppSelector((state) => state.todo.loading);
+
   // *class Type
   // const todos = [new Todo("Learn React"), new Todo("Learn Typescript")];
 
@@ -37,9 +40,13 @@ function App() {
       return state.filter((item) => item.id !== id);
     });
   };
+  const loading = (
+    <p style={{ width: "40rem", margin: "2rem auto" }}>로딩중입니다...</p>
+  );
   return (
     <div className="App">
       <NewTodoUseState onAddTodo={onAddTodo} />
+      {isLoading && loading}
       <Todos items={todos} handleOnClick={handleOnClick}>
         <p>props</p>
       </Todos>
