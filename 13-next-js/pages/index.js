@@ -29,6 +29,8 @@ export async function getStaticProps() {
     props: {
       meetups: DUMMY_MEETUPS,
     },
+    // 시간설정에 따라서 데이터를 가져오는 프로퍼티
+    revalidate: 1,
   };
 }
 
