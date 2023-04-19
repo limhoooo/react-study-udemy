@@ -1,50 +1,67 @@
-import React from "react";
+import { MongoClient, ObjectId } from "mongodb";
+import { Fragment } from "react";
+
 import MeetupDetail from "../../components/meetups/MeetupDetail";
 
-const MeetupDetails = () => {
+function MeetupDetails(props) {
   return (
-    <MeetupDetail
-      image="https://picsum.photos/600/600/?random"
-      title="A First Meet up"
-      address="Some address 5, 12345 Some City"
-      description="This a first meetup"
-    />
+    <Fragment>
+      <MeetupDetail
+        image={props.meetupData.image}
+        title={props.meetupData.title}
+        address={props.meetupData.address}
+        description={props.meetupData.description}
+      />
+    </Fragment>
   );
-};
+}
 
-// 동적으로 라우팅 기능
-// 서버에서 받아온 데이터로 path 정보를 설정해줌
 export async function getStaticPaths() {
+  const client = await MongoClient.connect(
+    "mongodb+srv://limhoooo:dlagh12@cluster0.tqob8j2.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+
+  client.close();
+
   return {
-    fallback: true,
-    paths: [
-      {
-        params: {
-          meetupId: "m1",
-        },
-      },
-      {
-        params: {
-          meetupId: "m2",
-        },
-      },
-    ],
+    fallback: "blocking",
+    paths: meetups.map((meetup) => ({
+      params: { meetupId: meetup._id.toString() },
+    })),
   };
 }
 
 export async function getStaticProps(context) {
-  console.log(context);
+  // fetch data for a single meetup
+
   const meetupId = context.params.meetupId;
-  // 브라우저가 아닌 터미널에서 보여짐
-  console.log(meetupId);
+
+  const client = await MongoClient.connect(
+    "mongodb+srv://limhoooo:dlagh12@cluster0.tqob8j2.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const selectedMeetup = await meetupsCollection.findOne({
+    _id: ObjectId(meetupId),
+  });
+
+  client.close();
+
   return {
     props: {
-      meetupsData: {
-        id: meetupId,
-        title: "A First Meet up",
-        image: "https://picsum.photos/600/600/?random",
-        address: "Some address 5, 12345 Some City",
-        description: "This a first meetup",
+      meetupData: {
+        id: selectedMeetup._id.toString(),
+        title: selectedMeetup.title,
+        address: selectedMeetup.address,
+        image: selectedMeetup.image,
+        description: selectedMeetup.description,
       },
     },
   };

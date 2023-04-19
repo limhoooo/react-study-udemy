@@ -1,21 +1,6 @@
-import MeetupList from "./../components/meetups/MeetupList";
+import { MongoClient } from "mongodb";
 
-const DUMMY_MEETUPS = [
-  {
-    id: "m1",
-    title: "A First Meet up",
-    image: "https://picsum.photos/600/600/?random",
-    address: "Some address 5, 12345 Some City",
-    description: "This a first meetup",
-  },
-  {
-    id: "m2",
-    title: "A 2 Meet up",
-    image: "https://picsum.photos/600/600/?random",
-    address: "222Some address 5, 12345 Some City",
-    description: "222This a first meetup",
-  },
-];
+import MeetupList from "./../components/meetups/MeetupList";
 
 const HomePage = (props) => {
   return <MeetupList meetups={props.meetups} />;
@@ -36,12 +21,24 @@ const HomePage = (props) => {
 // 서버측에서 실행되게 하는 함수
 // page 컴포넌트에서만 동작함
 export async function getStaticProps() {
+  const client = await MongoClient.connect(
+    "mongodb+srv://limhoooo:dlagh12@cluster0.tqob8j2.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+
+  const meetupsCollention = db.collection("meetups");
+  const meetups = await meetupsCollention.find().toArray();
+  client.close();
   return {
     props: {
-      meetups: DUMMY_MEETUPS,
+      meetups: meetups.map((item) => ({
+        title: item.title,
+        address: item.address,
+        image: item.image,
+        id: item._id.toString(),
+      })),
     },
     // 시간설정에 따라서 데이터를 가져오는 프로퍼티
-    revalidate: 1,
   };
 }
 
