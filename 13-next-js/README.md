@@ -1,11 +1,7 @@
 ### 파일기반라우트
 
-### pre-rendering
+### pre-rendering (SSR/SSG/CSR/ISR)
 
-### API 경로
+### API Routes
 
-### page 컴포넌트들은 최대한 깔끔하게 (컴포넌트 import 만 하는 식으로)
-
-## getStaticProps()
-
-## + revalidate
+### head
